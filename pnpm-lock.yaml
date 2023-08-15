@@ -1,0 +1,36 @@
+lockfileVersion: '6.0'
+
+dependencies:
+  picocolors:
+    specifier: ^1.0.0
+    version: registry.npmmirror.com/picocolors@1.0.0
+  typescript:
+    specifier: ^5.1.6
+    version: registry.npmmirror.com/typescript@5.1.6
+
+devDependencies:
+  '@types/node':
+    specifier: ^20.4.7
+    version: registry.npmmirror.com/@types/node@20.4.7
+
+packages:
+
+  registry.npmmirror.com/@types/node@20.4.7:
+    resolution: {integrity: sha512-bUBrPjEry2QUTsnuEjzjbS7voGWCc30W0qzgMf90GPeDGFRakvrz47ju+oqDAKCXLUCe39u57/ORMl/O/04/9g==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/@types/node/-/node-20.4.7.tgz}
+    name: '@types/node'
+    version: 20.4.7
+    dev: true
+
+  registry.npmmirror.com/picocolors@1.0.0:
+    resolution: {integrity: sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/picocolors/-/picocolors-1.0.0.tgz}
+    name: picocolors
+    version: 1.0.0
+    dev: false
+
+  registry.npmmirror.com/typescript@5.1.6:
+    resolution: {integrity: sha512-zaWCozRZ6DLEWAWFrVDz1H6FVXzUSfTy5FUMWsQlU8Ym5JP9eO4xkTIROFCQvhQf61z6O/G6ugw3SgAnvvm+HA==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/typescript/-/typescript-5.1.6.tgz}
+    name: typescript
+    version: 5.1.6
+    engines: {node: '>=14.17'}
+    hasBin: true
+    dev: false
