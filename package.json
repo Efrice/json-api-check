@@ -1,15 +1,15 @@
 {
-  "name": "json-api-check",
+  "name": "jsonapi-check",
   "version": "0.0.0",
   "description": "Easy to check type for json api response.",
   "author": "efrice",
   "license": "MIT",
-  "homepage": "https://github.com/efrice/json-api-check#readme",
+  "homepage": "https://github.com/efrice/jsonapi-check#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/efrice/json-api-check.git"
+    "url": "git+https://github.com/efrice/jsonapi-check.git"
   },
-  "bugs": "https://github.com/efrice/json-api-check/issues",
+  "bugs": "https://github.com/efrice/jsonapi-check/issues",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "scripts": {
@@ -24,9 +24,9 @@
     "README.md"
   ],
   "keywords": [
+    "json",
     "api",
-    "type-check",
-    "json"
+    "type-check"
   ],
   "dependencies": {
     "picocolors": "^1.0.0",

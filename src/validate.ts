@@ -2,22 +2,20 @@ import * as ts from 'typescript'
 import fs from 'fs'
 import path from 'path'
 import { printErrorLog } from './log'
+import { Error } from './types'
+import { capitalize } from './utils'
 
 const rootProgram = createProgramFromModuleText()
 
-export type Error = {
-  property: string
-  message: string
-}
-
-export function validator(typeSchema: string, jsonObject: object) {
+export function validator(typeSchema: string, jsonObject: object, options) {
+  const { schemaDir: schema } = options
   const moduleText = createModuleTextFromJson(typeSchema, jsonObject)
-  const program = createProgramFromModuleText(typeSchema, moduleText, rootProgram)
+  const program = createProgramFromModuleText(typeSchema, moduleText, schema, rootProgram)
   const syntacticDiagnostics = program.getSyntacticDiagnostics()
   const programDiagnostics = syntacticDiagnostics.length ? syntacticDiagnostics : program.getSemanticDiagnostics()
   if (programDiagnostics.length) {
     const errors = programDiagnostics.map(d => getDiagnostic(d))
-    printErrorLog(typeSchema, errors)
+    printErrorLog(typeSchema, errors, options)
   }
 }
 
@@ -34,14 +32,14 @@ function getTypeProperty(text: string, start: number): string {
     typeProperty += letter
     letter = text[++start]
   }
-  return typeProperty
+  return capitalize(typeProperty)
 }
 
 function createModuleTextFromJson(typeSchema: string, jsonObject: object): string {
   return `import { ${typeSchema} } from './schema';\nconst json: ${typeSchema} = ${JSON.stringify(jsonObject, null, 2)};\n`
 }
 
-function createProgramFromModuleText(typeSchema = '', moduleText = '', oldProgram?: ts.Program): ts.Program {
+function createProgramFromModuleText(typeSchema = '', moduleText = '', schemaDir = 'schema', oldProgram?: ts.Program): ts.Program {
   const libText = `interface Array<T> { length: number, [n: number]: T }
     interface Object { toString(): string }
     interface Function { prototype: unknown }
@@ -52,7 +50,7 @@ function createProgramFromModuleText(typeSchema = '', moduleText = '', oldProgra
     interface Number { valueOf(): number }
     interface RegExp { test(string: string): boolean }`
 
-  const schema = typeSchema ? fs.readFileSync(path.resolve(`./schema/${typeSchema}.ts`), "utf8") : ''
+  const schema = typeSchema ? fs.readFileSync(path.resolve(`./${schemaDir}/${typeSchema}.ts`), "utf8") : ''
   
   const fileMap = new Map([
     createFileMapEntry("/lib.d.ts", libText),

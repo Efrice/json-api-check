@@ -6,10 +6,10 @@
   "labels":
     {
       "id": 1,
-      "color": {
+      "color": [{
         "name": "white",
         "hex": "#000",
         "value": 0
-      }
+      }]
     }
 }
