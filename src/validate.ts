@@ -2,20 +2,21 @@ import * as ts from 'typescript'
 import fs from 'fs'
 import path from 'path'
 import { printErrorLog } from './log'
-import { Error } from './types'
+import { Error, OptionsConfig } from './types'
 import { capitalize } from './utils'
 
 const rootProgram = createProgramFromModuleText()
 
-export function validator(typeSchema: string, jsonObject: object, options) {
-  const { schemaDir: schema } = options
-  const moduleText = createModuleTextFromJson(typeSchema, jsonObject)
-  const program = createProgramFromModuleText(typeSchema, moduleText, schema, rootProgram)
+export function validator(jsonObject: object, options: OptionsConfig) {
+  const { schemaDir: schema, hasSubdirectory, subdirectory, type, fileName } = options
+  const moduleText = createModuleTextFromJson(type, jsonObject)
+  const schemaDir = hasSubdirectory && subdirectory ? schema + '/' + subdirectory : schema
+  const program = createProgramFromModuleText(fileName, moduleText, schemaDir, rootProgram)
   const syntacticDiagnostics = program.getSyntacticDiagnostics()
   const programDiagnostics = syntacticDiagnostics.length ? syntacticDiagnostics : program.getSemanticDiagnostics()
   if (programDiagnostics.length) {
     const errors = programDiagnostics.map(d => getDiagnostic(d))
-    printErrorLog(typeSchema, errors, options)
+    printErrorLog(errors, options)
   }
 }
 
@@ -35,8 +36,8 @@ function getTypeProperty(text: string, start: number): string {
   return capitalize(typeProperty)
 }
 
-function createModuleTextFromJson(typeSchema: string, jsonObject: object): string {
-  return `import { ${typeSchema} } from './schema';\nconst json: ${typeSchema} = ${JSON.stringify(jsonObject, null, 2)};\n`
+function createModuleTextFromJson(type: string, jsonObject: object): string {
+  return `import { ${type} } from './schema';\nconst json: ${type} = ${JSON.stringify(jsonObject, null, 2)};\n`
 }
 
 function createProgramFromModuleText(typeSchema = '', moduleText = '', schemaDir = 'schema', oldProgram?: ts.Program): ts.Program {

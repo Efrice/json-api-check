@@ -1,14 +1,18 @@
+import { isObject, resolveOptionsConfig } from './utils'
+import { Option, OptionsConfig } from './types'
 import { createSchema } from './schema'
-import { capitalize, isObject, stripS } from './utils'
 import { validator } from './validate'
 import c from "picocolors"
-import { Config } from './types'
 
-const config: Config = {
+const config: OptionsConfig = {
   schemaDir: 'schema',
+  hasSubdirectory: false,
+  subdirectory: '',
+  type: '',
+  fileName: ''
 }
 
-export function jsonapiCheck(apiName: string, data: any, options = config) {
+export function jsonapiCheck(apiName: string, data: any, options: Option) {
   if (!data) {
     console.error(`${c.red(`API ${apiName} is not responsed.`)}`)
     return
@@ -16,8 +20,10 @@ export function jsonapiCheck(apiName: string, data: any, options = config) {
   if (!isObject(data)) {
     return
   }
-  const typeName = capitalize(stripS(apiName))
+
   const optionsConfig = Object.assign(config, options)
-  createSchema(typeName, data, optionsConfig)
-  validator(typeName, data, optionsConfig)
+
+  resolveOptionsConfig(apiName, optionsConfig)
+  createSchema(data, optionsConfig)
+  validator(data, optionsConfig)
 }

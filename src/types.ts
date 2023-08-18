@@ -1,5 +1,12 @@
-export interface Config {
-  schemaDir: string
+export interface Option {
+  schemaDir?: string
+  hasSubdirectory?: boolean
+}
+
+export interface OptionsConfig extends Option {
+  subdirectory: string
+  type: string
+  fileName: string
 }
 
 export interface Error {

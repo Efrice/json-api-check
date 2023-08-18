@@ -4,7 +4,9 @@ import { jsonapiCheck } from '../../../dist/index'
 axios.interceptors.response.use((response) => {
   const { request, data } = response
   const paths = request.path.split('/')
-  jsonapiCheck(paths[paths.length - 1], data)
+  jsonapiCheck('/info/' + paths[paths.length - 1], data, {
+    hasSubdirectory: true
+  })
   return response
 })
 

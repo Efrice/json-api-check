@@ -1,3 +1,18 @@
+import { OptionsConfig } from './types'
+
+export function resolveOptionsConfig(apiName, config: OptionsConfig) {
+  const { hasSubdirectory } = config
+  if(apiName.includes('/')){
+    const apiNames = apiName.split('/')
+    if(hasSubdirectory){
+      config.subdirectory = apiNames[0] || apiNames[1]
+    }
+    config.fileName = config.type = capitalize(stripS(apiNames[apiNames.length - 1]))
+  }else {
+    config.fileName = config.type = capitalize(stripS(apiName))
+  }
+}
+
 export function isObject(value): boolean{
   return value !== null && typeof value === 'object'
 }

@@ -1,17 +1,26 @@
 import fs from 'fs'
 import path from 'node:path'
 import { isArray, isObject, getBaseType, capitalize, stripS } from './utils'
-import { Context } from './types'
+import { Context, OptionsConfig } from './types'
 
-export function createSchema(apiName: string, data, options){
-  const { schemaDir: schema } = options
-  const context = createInterface(apiName)
+export function createSchema(data, options: OptionsConfig){
+  const { schemaDir: schema, subdirectory, type } = options
+  const context = createInterface(type)
   const { interfaceStr, interfaceItems } = JsonType(data, context)
-  if(!fs.existsSync(path.resolve(`./${schema}`))){
-    fs.mkdirSync(path.resolve(`./${schema}`))
+
+  const schemaPath = path.resolve(`./${schema}`)
+  if(!fs.existsSync(schemaPath)){
+    fs.mkdirSync(schemaPath)
   }
-  if(!fs.existsSync(path.resolve(`./${schema}/${apiName}.ts`))){
-    fs.writeFileSync(path.resolve(`./${schema}/${apiName}.ts`), interfaceStr + interfaceItems.join('\n'))
+
+  const subdirPath = path.resolve(`./${schema}/${subdirectory}`)
+  if(subdirectory && !fs.existsSync(subdirPath)){
+    fs.mkdirSync(subdirPath)
+  }
+
+  const filePath = path.resolve(subdirectory ? subdirPath : schemaPath, `./${type}.ts`)
+  if(!fs.existsSync(filePath)){
+    fs.writeFileSync(filePath, interfaceStr + interfaceItems.join('\n'))
   }
 }
 
