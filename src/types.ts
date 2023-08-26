@@ -1,3 +1,5 @@
+export type Method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
+
 export interface Option {
   schemaDir?: string
   hasSubdirectory?: boolean
@@ -5,6 +7,7 @@ export interface Option {
 
 export interface OptionsConfig extends Option {
   subdirectory: string
+  method: string
   type: string
   fileName: string
 }

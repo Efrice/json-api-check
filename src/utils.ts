@@ -1,15 +1,20 @@
 import { OptionsConfig } from './types'
 
-export function resolveOptionsConfig(apiName, config: OptionsConfig) {
+export function resolveOptionsConfig(path, config: OptionsConfig) {
   const { hasSubdirectory } = config
-  if(apiName.includes('/')){
-    const apiNames = apiName.split('/')
+  if(path.includes('/')){
+    const paths = path.split('/')
     if(hasSubdirectory){
-      config.subdirectory = apiNames[0] || apiNames[1]
+      config.subdirectory = paths[0] || paths[1]
     }
-    config.fileName = config.type = capitalize(stripS(apiNames[apiNames.length - 1]))
+    const lastPath = paths[paths.length - 1]
+    const resPath = isNumber(lastPath) ? paths[paths.length - 2] : lastPath
+    const capPath = capitalize(resPath)
+    config.type = stripS(capPath)
+    config.fileName = config.method + '-' + capPath
   }else {
-    config.fileName = config.type = capitalize(stripS(apiName))
+    config.type = capitalize(stripS(path))
+    config.fileName = config.method + '-' + capitalize(path)
   }
 }
 
@@ -18,6 +23,10 @@ export function isObject(value): boolean{
 }
 
 export const isArray = Array.isArray
+
+function isNumber(value){
+  return typeof value === 'number'
+}
 
 export function getBaseType(value): string{
   return typeof value

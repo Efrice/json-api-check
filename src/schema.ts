@@ -4,7 +4,7 @@ import { isArray, isObject, getBaseType, capitalize, stripS } from './utils'
 import { Context, OptionsConfig } from './types'
 
 export function createSchema(data, options: OptionsConfig){
-  const { schemaDir: schema, subdirectory, type } = options
+  const { schemaDir: schema, hasSubdirectory, subdirectory, type, fileName } = options
   const context = createInterface(type)
   const { interfaceStr, interfaceItems } = JsonType(data, context)
 
@@ -14,11 +14,11 @@ export function createSchema(data, options: OptionsConfig){
   }
 
   const subdirPath = path.resolve(`./${schema}/${subdirectory}`)
-  if(subdirectory && !fs.existsSync(subdirPath)){
+  if(hasSubdirectory && !fs.existsSync(subdirPath)){
     fs.mkdirSync(subdirPath)
   }
 
-  const filePath = path.resolve(subdirectory ? subdirPath : schemaPath, `./${type}.ts`)
+  const filePath = path.resolve(subdirectory ? subdirPath : schemaPath, `./${fileName}.ts`)
   if(!fs.existsSync(filePath)){
     fs.writeFileSync(filePath, interfaceStr + interfaceItems.join('\n'))
   }
