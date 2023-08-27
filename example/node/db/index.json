@@ -1,7 +1,7 @@
 {
   "users": { 
     "name": "joe",
-    "age": 18
+    "age": "18"
   },
   "labels":
     {

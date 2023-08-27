@@ -33,7 +33,7 @@ function getTypeProperty(text: string, start: number): string {
     typeProperty += letter
     letter = text[++start]
   }
-  return capitalize(typeProperty)
+  return typeProperty
 }
 
 function createModuleTextFromJson(type: string, jsonObject: object): string {

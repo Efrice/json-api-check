@@ -11,10 +11,10 @@ export function resolveOptionsConfig(path, config: OptionsConfig) {
     const resPath = isNumber(lastPath) ? paths[paths.length - 2] : lastPath
     const capPath = capitalize(resPath)
     config.type = stripS(capPath)
-    config.fileName = config.method + '-' + capPath
+    config.fileName = capPath + '-' + config.method
   }else {
     config.type = capitalize(stripS(path))
-    config.fileName = config.method + '-' + capitalize(path)
+    config.fileName = capitalize(path) + '-' + config.method
   }
 }
 

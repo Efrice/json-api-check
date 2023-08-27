@@ -1,4 +1,6 @@
-![logo](./assert/jsonapi-check.png)
+<p align="center">
+  <img src="./assert/jsonapi-check.png" height="168">
+</p>
 
 # jsonapi-check
 
@@ -12,10 +14,8 @@ npm install jsonapi-check -D
 
 ## RESTful API
 
-GET /authors                   --> schema/GET-authors.ts    --> interface Author
-GET /authors/12                --> schema/GET-author.ts     --> interface Author
-GET /authors/12?categories=2   --> schema/GET-author.ts     --> interface Author
-GET /articles?published=true   --> schema/GET-articles.ts   --> interface Article
+- GET /authors                   --> schema/GET-authors.ts    --> interface Author
+- GET /authors/12                --> schema/GET-author.ts     --> interface Author
 
 ## Base Usage
 
@@ -29,13 +29,14 @@ axios.interceptors.response.use((response) => {
   const { request, data } = response
   const { path, method } = requset
 
-  // check
+  // dev-mode check
   jsonapiCheck(path, method, data)
   return response
 })
 ```
 
 #### brower
+
 ```js
 axios.interceptors.response.use((response) => {
   const { request, data } = response
@@ -53,6 +54,7 @@ axios.interceptors.response.use((response) => {
 ```
 
 express app
+
 ```js
 const { jsonapiCheck } = require('../../dist/index.js')
 const express = require('express')
@@ -65,14 +67,9 @@ app.use(bodyParser.json({ type: 'text/plain' }))
 
 app.all('*', (req, res) => {
   const { url, method, body, path } = req
-  console.log('path:', path)
-  console.log('url:', url)
-  console.log('method:', method)
-  console.log('body:', body)
-  jsonapiCheck(path, method, body)
-  res.send({
-    msg: "hello  world"
-  })
+
+  const errors = jsonapiCheck(path, method, body)
+  res.send(errors)
 })
 
 app.listen(3000, () => {
