@@ -8,17 +8,12 @@ app.use(cors())
 app.use(bodyParser.json({ type: 'text/plain' }))
 
 app.all('*', (req, res) => {
-  const { url, method, body, path } = req
-  console.log('path:', path)
-  console.log('url:', url)
-  console.log('method:', method)
-  console.log('body:', body)
-  jsonapiCheck(path, method, body)
-  res.send({
-    msg: "hello  world"
-  })
+  const { path, headers, body } = req
+  const { 'x-http-method-override': method } = headers
+  const errors = jsonapiCheck(path, method, body)
+  res.send(JSON.stringify(errors, null, 2))
 })
 
-app.listen(3000, () => {
-  console.log('listening on port 3000')
+app.listen(5050, () => {
+  console.log('listening on port 5050')
 })

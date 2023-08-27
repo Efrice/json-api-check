@@ -1,0 +1,15 @@
+{
+  "users": { 
+    "name": "joe",
+    "age": 18
+  },
+  "labels":
+    {
+      "id": "1",
+      "color": [{
+        "name": "white",
+        "hex": "#000",
+        "value": 0
+      }]
+    }
+}

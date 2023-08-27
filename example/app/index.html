@@ -6,19 +6,10 @@
   <title>Document</title>
 </head>
 <body>
+  <script src="./fetch.js"></script>
   <script>
-    const obj = {
-      name: 'meimei'
-    }
-
-    // TODO
-    // GET NO BODY
-    fetch('http://localhost:3000/' + 'path', {
-      method: 'POST',
-      body: JSON.stringify(obj)
-    })
-    .then(response => response.json())
-    .then(data => console.log(data));
+    fetch('http://localhost:3000/users')
+    fetch('http://localhost:3000/labels')
   </script>
 </body>
 </html>

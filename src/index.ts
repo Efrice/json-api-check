@@ -1,7 +1,7 @@
 import { isObject, resolveOptionsConfig } from './utils'
 import { Method, Option, OptionsConfig } from './types'
 import { createSchema } from './schema'
-import { validator } from './validate'
+import { validate } from './validate'
 import c from "picocolors"
 
 const config: OptionsConfig = {
@@ -27,5 +27,5 @@ export function jsonapiCheck(path: string, method: Method, data: any, options?: 
 
   resolveOptionsConfig(path, optionsConfig)
   createSchema(data, optionsConfig)
-  validator(data, optionsConfig)
+  return validate(data, optionsConfig)
 }

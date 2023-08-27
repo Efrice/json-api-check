@@ -3,11 +3,10 @@ import fs from 'fs'
 import path from 'path'
 import { printErrorLog } from './log'
 import { Error, OptionsConfig } from './types'
-import { capitalize } from './utils'
 
 const rootProgram = createProgramFromModuleText()
 
-export function validator(jsonObject: object, options: OptionsConfig) {
+export function validate(jsonObject: object, options: OptionsConfig) {
   const { schemaDir: schema, hasSubdirectory, subdirectory, type, fileName } = options
   const moduleText = createModuleTextFromJson(type, jsonObject)
   const schemaDir = hasSubdirectory && subdirectory ? schema + '/' + subdirectory : schema
@@ -15,8 +14,17 @@ export function validator(jsonObject: object, options: OptionsConfig) {
   const syntacticDiagnostics = program.getSyntacticDiagnostics()
   const programDiagnostics = syntacticDiagnostics.length ? syntacticDiagnostics : program.getSemanticDiagnostics()
   if (programDiagnostics.length) {
+    const filePath = ` ${schema} > ` + `${hasSubdirectory && subdirectory ? subdirectory + ' > ' : ''}` + `${fileName}.ts `
     const errors = programDiagnostics.map(d => getDiagnostic(d))
-    printErrorLog(errors, options)
+    printErrorLog(filePath, errors)
+    return {
+      filePath,
+      errors
+    }
+  }
+  return {
+    filePath: '',
+    errors: []
   }
 }
 

@@ -1,10 +1,9 @@
 import c from "picocolors"
-import { Error, OptionsConfig } from './types'
+import { Error } from './types'
 
-export function printErrorLog(errors: Error[], options: OptionsConfig) {
-  const { schemaDir: schema, hasSubdirectory, subdirectory, fileName } = options
+export function printErrorLog(filePath: string, errors: Error[]) {
   console.log()
-  console.log(c.inverse(c.bold(c.red(` FAIL `))) + ` ${schema} > ` + `${hasSubdirectory && subdirectory ? subdirectory + ' > ' : ''}` + `${fileName}.ts `)
+  console.log(c.inverse(c.bold(c.red(` FAIL `))) + `${filePath}`)
   errors.forEach((error) => {
     const { property, message } = error
     console.log(c.red(` ${property}: `) + c.red(` ${message} `))
