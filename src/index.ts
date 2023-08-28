@@ -19,6 +19,7 @@ export function jsonapiCheck(path: string, method: Method, data: any, options?: 
     return
   }
   if (!isObject(data)) {
+    console.error(`${c.red(`Responsed ${data} is not json.`)}`)
     return
   }
 

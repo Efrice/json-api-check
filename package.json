@@ -13,6 +13,7 @@
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "scripts": {
+    "test": "vitest --watch=false",
     "build": "rimraf dist && tsc -p src"
   },
   "engines": {
@@ -32,6 +33,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.4.7",
-    "rimraf": "^5.0.1"
+    "rimraf": "^5.0.1",
+    "vitest": "^0.34.3"
   }
 }
