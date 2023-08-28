@@ -2,11 +2,12 @@ import * as ts from 'typescript'
 import fs from 'fs'
 import path from 'path'
 import { printErrorLog } from './log'
-import { Error, OptionsConfig } from './types'
+import { Error, OptionsConfig, Result } from './types'
+import { lower } from './utils'
 
 const rootProgram = createProgramFromModuleText()
 
-export function validate(jsonObject: object, options: OptionsConfig) {
+export function validate(jsonObject: object, options: OptionsConfig): Result {
   const { schemaDir: schema, hasSubdirectory, subdirectory, type, fileName } = options
   const moduleText = createModuleTextFromJson(type, jsonObject)
   const schemaDir = hasSubdirectory && subdirectory ? schema + '/' + subdirectory : schema
@@ -28,11 +29,27 @@ export function validate(jsonObject: object, options: OptionsConfig) {
   }
 }
 
-function getDiagnostic(d: ts.Diagnostic): Error{
+function getDiagnostic(d: ts.Diagnostic): Error {
   return {
+    line: getLine(d.file && d.file.text || '', (d.start || 0) + 1),
     property: getTypeProperty(d.file && d.file.text || '', (d.start || 0) + 1),
-    message: typeof d.messageText === "string" ? d.messageText : d.messageText.messageText
+    message: typeof d.messageText === "string" ? lower(d.messageText) : lower(d.messageText.messageText)
   }
+}
+
+function getLine(text: string, start: number): number {
+  let line = 1
+  const texts = text.split('\n')
+  for (let i = 0; i < texts.length; i++) {
+    const item = texts[i]
+    if(item.length > start){
+      line = i
+      break
+    }else {
+      start -= item.length
+    }
+  }
+  return line
 }
 
 function getTypeProperty(text: string, start: number): string {

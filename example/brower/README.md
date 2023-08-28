@@ -1,14 +1,17 @@
-# Jsonapi-check node example
+# Jsonapi-check brower example
 
 ```bash
+# start db serve
+npm run serve:db
+
 # start serve
 npm run serve
-# run test to generate type form json api response in schema dictionary
-npm run test
+
+# open index.html with live server
 
 # change db/index.json data, like 18 -> '18'
-npm run test
 
+#  refresh the brower
 #  will show next error
 #  FAIL  schema > Users-GET.ts
 #  -> 3.age:  type 'string' is not assignable to type 'number'.

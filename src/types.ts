@@ -13,6 +13,7 @@ export interface OptionsConfig extends Option {
 }
 
 export interface Error {
+  line: number
   property: string
   message: string
 }
@@ -22,4 +23,9 @@ export interface Context {
   interfaceItems: string[],
   join(str: string): void,
   push(item: string | string[]): void
+}
+
+export interface Result {
+  filePath: string
+  errors: Error[]
 }

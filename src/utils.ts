@@ -2,8 +2,9 @@ import { OptionsConfig } from './types'
 
 export function resolveOptionsConfig(path, config: OptionsConfig) {
   const { hasSubdirectory } = config
-  if(path.includes('/')){
-    const paths = path.split('/')
+  const filePath = stripSlash(path)
+  if(filePath.includes('/')){
+    const paths = filePath.split('/')
     if(hasSubdirectory){
       config.subdirectory = paths[0] || paths[1]
     }
@@ -13,30 +14,46 @@ export function resolveOptionsConfig(path, config: OptionsConfig) {
     config.type = stripS(capPath)
     config.fileName = capPath + '-' + config.method
   }else {
-    config.type = capitalize(stripS(path))
-    config.fileName = capitalize(path) + '-' + config.method
+    config.type = capitalize(stripS(filePath))
+    config.fileName = capitalize(filePath) + '-' + config.method
   }
 }
 
-export function isObject(value): boolean{
+function stripSlash(s: string): string {
+  return stripStartSlash(stripEndSlash(s))
+}
+
+function stripEndSlash(s: string): string {
+  return s.endsWith('/') ? s.substring(0, s.length - 1) : s
+}
+
+function stripStartSlash(s: string): string {
+  return s.startsWith('/') ? s.substring(1) : s
+}
+
+export function isObject(value): boolean {
   return value !== null && typeof value === 'object'
 }
 
 export const isArray = Array.isArray
 
-function isNumber(value){
+function isNumber(value): boolean {
   return typeof value === 'number'
 }
 
-export function getBaseType(value): string{
+export function getBaseType(value): string {
   return typeof value
 }
 
-export function capitalize(s: string): string{
+export function capitalize(s: string): string {
   return s.charAt(0).toUpperCase() + s.slice(1)
 }
+
+export function lower(s: string): string {
+  return s.charAt(0).toLowerCase() + s.slice(1)
+}
     
-export function stripS(s: string): string{
+export function stripS(s: string): string {
   return s.endsWith('s') ? s.substring(0, s.length - 1) : s
 }
 

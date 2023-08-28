@@ -12,67 +12,46 @@ Easy to check type for json api response.
 npm install jsonapi-check -D
 ```
 
-## RESTful API
-
-- GET /authors                   --> schema/GET-authors.ts    --> interface Author
-- GET /authors/12                --> schema/GET-author.ts     --> interface Author
-
 ## Base Usage
 
-### axios
+### axios[node]
 
-#### node
+See [example/node](./example/node/README.md) for more details.
+
 ```js
 import { jsonapiCheck } from 'jsonapi-check'
 
 axios.interceptors.response.use((response) => {
   const { request, data } = response
   const { path, method } = requset
+  const options = {
+    schemaDir: 'schema',
+    hasSubdirectory: false
+  }
 
   // dev-mode check
-  jsonapiCheck(path, method, data)
+  jsonapiCheck(path, method, data, options)
   return response
 })
 ```
 
-#### brower
+### fetch[brower]
 
-```js
-axios.interceptors.response.use((response) => {
-  const { request, data } = response
-  const { path, method } = request
+See [example/brower](./example/brower/README.md) for more details.
 
-  // fetch
-  // TODO
-  // GET NO BODY
-  fetch('http://localhost:3000/' + path, {
-    method,
-    body: data
-  })
-  return response
-})
-```
+## RESTful API
 
-express app
+- GET /authors                   --> schema/authors-GET.ts    --> interface Author
+- GET /authors/12                --> schema/author-GET.ts     --> interface Author
 
-```js
-const { jsonapiCheck } = require('../../dist/index.js')
-const express = require('express')
-const cors = require('cors')
-const bodyParser = require('body-parser')
-const app = express()
-app.use(cors())
+## Options
 
-app.use(bodyParser.json({ type: 'text/plain' }))
+schemaDir: the name of directory for generate json schema type, default `schema`.
 
-app.all('*', (req, res) => {
-  const { url, method, body, path } = req
+hasSubdirectory: the schema directory has subdirectory or not, default `false`.If true, will be next directory.
+- GET /authors                   --> schema/authors/authors-GET.ts    --> interface Author
+- GET /web/…/authors             --> schema/web/author-GET.ts         --> interface Author
 
-  const errors = jsonapiCheck(path, method, body)
-  res.send(errors)
-})
+## License
 
-app.listen(3000, () => {
-  console.log('listening on port 3000')
-})
-```
+[MIT](./LICENSE) License © 2023-Present Efrice.
