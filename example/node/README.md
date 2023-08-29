@@ -1,21 +1,24 @@
 # Jsonapi-check node example
 
 ```bash
-# start serve
-npm run serve
-# run test to generate type form json api response in schema dictionary
+# start db serve
+npm run serve:db
+# run test to auto generate interface file form json api response in schema dictionary
 npm run test
 
 # change db/index.json data, like 18 -> '18'
 npm run test
 
-#  will show next error
-#  FAIL  schema > Users-GET.ts
-#  -> 3.age:  type 'string' is not assignable to type 'number'.
+# Will show error
+
+# FAIL  schema > Users-GET.ts 
+# age: type 'string' is not assignable to type 'number'. 
+#        2 |      "name": "joe",
+# ->     3 |       "age": "18"
+#        4 |     };
 
 # Error Info
 # filePath   schema > Users-GET.ts
-# line       3
 # property   age
 # message    type 'string' is not assignable to type 'number'.
 ```

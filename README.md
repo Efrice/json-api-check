@@ -4,7 +4,7 @@
 
 # jsonapi-check
 
-Easy to check type for json api response.
+Easy to check type for json api response. Auto generate json interface file by request info ( path, method and response ) first time, then check type with the files next request. Of course, the json interface files can rewrite.
 
 ## Install
 
@@ -12,7 +12,7 @@ Easy to check type for json api response.
 npm install jsonapi-check -D
 ```
 
-## Base Usage
+## Usage
 
 ### axios[node]
 
@@ -46,11 +46,20 @@ See [example/brower](./example/brower/README.md) for more details.
 
 ## Options
 
-schemaDir: the name of directory for generate json schema type, default `schema`.
+### schemaDir
+  - Type: `string`
+  - Default: `schema`
+  
+  The name of directory for generate json schema type.
 
-hasSubdirectory: the schema directory has subdirectory or not, default `false`.If true, will be next directory.
-- GET /authors                   --> schema/authors/authors-GET.ts    --> interface Author
-- GET /web/…/authors             --> schema/web/author-GET.ts         --> interface Author
+### hasSubdirectory
+  - Type: `boolean`
+  - Default: `false`
+  
+  The schema directory has subdirectory or not. If true, will mkdir like next directory.
+
+  - GET /authors                   --> schema/authors/authors-GET.ts    --> interface Author
+  - GET /web/…/authors             --> schema/web/author-GET.ts         --> interface Author
 
 ## License
 

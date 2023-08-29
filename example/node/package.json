@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "node ./index.js",
-    "serve": "json-server --watch ./db/index.json -p 3000"
+    "serve:db": "json-server --watch ./db/index.json -p 3000"
   },
   "keywords": [],
   "author": "",

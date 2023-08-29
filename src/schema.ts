@@ -5,8 +5,6 @@ import { Context, OptionsConfig } from './types'
 
 export function createSchema(data, options: OptionsConfig){
   const { schemaDir: schema, hasSubdirectory, subdirectory, type, fileName } = options
-  const context = createInterface(type)
-  const { interfaceStr, interfaceItems } = JsonType(data, context)
 
   const schemaPath = path.resolve(`./${schema}`)
   if(!fs.existsSync(schemaPath)){
@@ -19,8 +17,24 @@ export function createSchema(data, options: OptionsConfig){
   }
 
   const filePath = path.resolve(subdirectory ? subdirPath : schemaPath, `./${fileName}.ts`)
-  if(!fs.existsSync(filePath)){
-    fs.writeFileSync(filePath, interfaceStr + interfaceItems.join('\n'))
+  const context = createInterface(type)
+  if(isArray(data)){
+    if(isObject(data[0])){
+      const { interfaceStr, interfaceItems } = JsonType(data[0], context)
+      options.type = type + 's'
+      writeFile(filePath, `export type ${options.type} = ${type}[]\n` + interfaceStr + interfaceItems.join("\n"))
+    }else {
+      writeFile(filePath, `export type ${type} = ${getBaseType(data[0])}[]`)
+    }
+  }else {
+    const { interfaceStr, interfaceItems } = JsonType(data, context)
+    writeFile(filePath, interfaceStr + interfaceItems.join("\n"))
+  }
+}
+
+function writeFile(filePath: string, content: string) {
+  if (!fs.existsSync(filePath)) {
+    fs.writeFileSync(filePath, content)
   }
 }
 
@@ -45,28 +59,20 @@ function createInterface(name: string): Context{
 
 function JsonType(jsonObject: object, context: Context): Context {
   const { join, push } = context
-  if(isArray(jsonObject)){
-    if(isObject(jsonObject[0])){
-      resolveArrayObject(join, push, 'data', jsonObject)
-    }else {
-      join(`  data: ${getBaseType(jsonObject[0])}[]\n`)
-    }
-  }else {
-    for (const key in jsonObject) {
-      const value = jsonObject[key]
-      if(isObject(value)){
-        if(isArray(value)){
-          if(isObject(value[0])){
-            resolveArrayObject(join, push, key, value)
-          }else {
-            join(`  ${key}: ${getBaseType(value[0])}[]\n`)
-          }
-        }else {
+  for (const key in jsonObject) {
+    const value = jsonObject[key]
+    if(isObject(value)){
+      if(isArray(value)){
+        if(isObject(value[0])){
           resolveArrayObject(join, push, key, value)
+        }else {
+          join(`  ${key}: ${getBaseType(value[0])}[]\n`)
         }
       }else {
-        join(`  ${key}: ${getBaseType(value)}\n`)
+        resolveArrayObject(join, push, key, value)
       }
+    }else {
+      join(`  ${key}: ${getBaseType(value)}\n`)
     }
   }
   join('}\n')

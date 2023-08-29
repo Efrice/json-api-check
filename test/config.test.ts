@@ -1,5 +1,6 @@
-import { resolveOptionsConfig } from '../src/utils'
+import { resolveOptionsConfig } from '../src/config'
 import { OptionsConfig } from '../src/types'
+import { describe, it, expect, vi } from 'vitest'
 
 describe("resolveOptionsConfig", ()=>{
 
@@ -41,6 +42,6 @@ describe("resolveOptionsConfig", ()=>{
 
     resolveOptionsConfig('//vip/xxx/users/12', options)
     expect(options.subdirectory).toBe('vip')
-    expect(options.fileName).toBe('Users-GET')
+    expect(options.fileName).toBe('User-GET')
   })
 })

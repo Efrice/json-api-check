@@ -13,7 +13,7 @@ export interface OptionsConfig extends Option {
 }
 
 export interface Error {
-  line: number
+  lines: string[]
   property: string
   message: string
 }

@@ -1,4 +1,5 @@
-import { isObject, resolveOptionsConfig } from './utils'
+import { isObject } from './utils'
+import { resolveOptionsConfig } from './config'
 import { Method, Option, OptionsConfig } from './types'
 import { createSchema } from './schema'
 import { validate } from './validate'

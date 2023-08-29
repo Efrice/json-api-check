@@ -4,6 +4,7 @@ import path from 'path'
 import { printErrorLog } from './log'
 import { Error, OptionsConfig, Result } from './types'
 import { lower } from './utils'
+import c from "picocolors"
 
 const rootProgram = createProgramFromModuleText()
 
@@ -31,34 +32,38 @@ export function validate(jsonObject: object, options: OptionsConfig): Result {
 
 function getDiagnostic(d: ts.Diagnostic): Error {
   return {
-    line: getLine(d.file && d.file.text || '', (d.start || 0) + 1),
+    lines: getLines(d.file && d.file.text || '', (d.start || 0) + 1),
     property: getTypeProperty(d.file && d.file.text || '', (d.start || 0) + 1),
     message: typeof d.messageText === "string" ? lower(d.messageText) : lower(d.messageText.messageText)
   }
 }
 
-function getLine(text: string, start: number): number {
-  let line = 1
+function getLines(text: string, start: number): string[] {
+  let lines: string[]  = []
   const texts = text.split('\n')
   for (let i = 0; i < texts.length; i++) {
     const item = texts[i]
     if(item.length > start){
-      line = i
+      if(i > 1){
+        lines.push(c.gray(`  ` + `${i-1}`.padStart(6, ' ') + ` |`) + `    ${texts[i-1]}`)
+        lines.push(c.gray(`->` + `${i}`.padStart(6, ' ') + ` |`) + `     ${texts[i]}`)
+        lines.push(c.gray(`  ` + `${i+1}`.padStart(6, ' ') + ` |`) + `     ${texts[i+1]}`)
+      }
       break
     }else {
       start -= item.length
     }
   }
-  return line
+  return lines
 }
 
 function getTypeProperty(text: string, start: number): string {
   let letter = text[start], typeProperty = ''
-  while(letter !== "\""){
+  while(letter !== "\"" && letter !== "="){
     typeProperty += letter
     letter = text[++start]
   }
-  return typeProperty
+  return typeProperty.startsWith("son:") ? typeProperty.replace("son:", "").trim() : typeProperty.replace(/\s/g, '')
 }
 
 function createModuleTextFromJson(type: string, jsonObject: object): string {

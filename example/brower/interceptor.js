@@ -29,8 +29,11 @@ function printErrorLog({ filePath, errors }) {
   let errorLog = ''
   errorLog += `FAIL ${filePath}\n`
   errors.forEach((error) => {
-    const { line, property, message } = error
-    errorLog += `  -> ${line}.${property}: ${message}\n`
+    const { lines, property, message } = error
+    errorLog += property ? `  ${property}: ${message}\n` : `  ${message}\n`
+    lines.forEach((line) => {
+      errorLog += `    ${line}\n`
+    })
   })
   console.error(errorLog)
 }
