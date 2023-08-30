@@ -3,37 +3,41 @@ import path from 'node:path'
 import { isArray, isObject, getBaseType, capitalize, stripS } from './utils'
 import { Context, OptionsConfig } from './types'
 
-export function createSchema(data, options: OptionsConfig){
-  const { schemaDir: schema, hasSubdirectory, subdirectory, type, fileName } = options
+export function createSchemaFile(jsonObject, options: OptionsConfig){
+  const { schemaDir, hasSubdirectory, subdirectory, typeName, fileName } = options
 
-  const schemaPath = path.resolve(`./${schema}`)
+  const schemaPath = path.resolve(`./${schemaDir}`)
   if(!fs.existsSync(schemaPath)){
     fs.mkdirSync(schemaPath)
   }
 
-  const subdirPath = path.resolve(`./${schema}/${subdirectory}`)
+  const subdirPath = path.resolve(`./${schemaDir}/${subdirectory}`)
   if(hasSubdirectory && !fs.existsSync(subdirPath)){
     fs.mkdirSync(subdirPath)
   }
 
   const filePath = path.resolve(subdirectory ? subdirPath : schemaPath, `./${fileName}.ts`)
-  const context = createInterface(type)
-  const content = getContent(data, context, options)
-  writeFile(filePath, content)
+  const schema = createSchema(typeName, jsonObject)
+  writeFile(filePath, schema)
 }
 
-export function getContent(data: any, context: Context, options: OptionsConfig): string {
-  const { type } = options
-  if(isArray(data)){
-    if(isObject(data[0])){
-      const { interfaceStr, interfaceItems } = JsonType(data[0], context)
-      options.type = type + 's'
-      return `export type ${options.type} = ${type}[]\n` + interfaceStr + interfaceItems.join("\n")
+/**
+ * Create a string containing the TypeScript source code for the JSON objcet. 
+ * @param {string} typeName The name of the JSON target type in the schema.
+ * @param {object} jsonObject The JSON object target.
+ * @return {string} A string containing the TypeScript source code for the JSON objcet.
+ */
+export function createSchema(typeName: string, jsonObject: object): string {
+  const context = createInterface(typeName)
+  if(isArray(jsonObject)){
+    if(isObject(jsonObject[0])){
+      const { interfaceStr, interfaceItems } = JsonType(jsonObject[0], context)
+      return `export type ${typeName} = ${stripS(typeName)}[]\n` + interfaceStr + interfaceItems.join("\n")
     }else {
-      return `export type ${type} = ${getBaseType(data[0])}[]`
+      return `export type ${stripS(typeName)} = ${getBaseType(jsonObject[0])}[]`
     }
   }else {
-    const { interfaceStr, interfaceItems } = JsonType(data, context)
+    const { interfaceStr, interfaceItems } = JsonType(jsonObject, context)
     return interfaceStr + interfaceItems.join("\n")
   }
 }

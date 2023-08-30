@@ -9,7 +9,7 @@ npm run serve
 
 # open index.html with live server
 
-# change db/index.json data, like 18 -> '18'
+# change db/index.json, like 18 -> '18'
 
 # Refresh the brower
 # Will show error

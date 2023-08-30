@@ -6,7 +6,7 @@ npm run serve:db
 # run test to auto generate interface file form json api response in schema dictionary
 npm run test
 
-# change db/index.json data, like 18 -> '18'
+# change db/index.json, like 18 -> '18'
 npm run test
 
 # Will show error

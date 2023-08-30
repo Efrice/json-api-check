@@ -3,7 +3,7 @@ import { OptionsConfig } from './types'
 import { stripSlash, isNumber, capitalize, stripS  } from './utils'
 
 export function resolveOptionsConfig(path, config: OptionsConfig) {
-  const { hasSubdirectory } = config
+  const { hasSubdirectory, isObjectArray } = config
   const filePath = stripSlash(path)
   if(filePath === ''){
     console.error(`${c.red(`Path ${path} is not valid.`)}`)  
@@ -21,13 +21,13 @@ export function resolveOptionsConfig(path, config: OptionsConfig) {
       return
     }
     const capPath = capitalize(resPath)
-    config.type = stripS(capPath)
+    config.typeName = isObjectArray ? stripS(capPath) + 's' : stripS(capPath)
     config.fileName = capPath + '-' + config.method
   }else {
     if(hasSubdirectory){
       config.subdirectory = filePath
     }
-    config.type = capitalize(stripS(filePath))
+    config.typeName = isObjectArray ? capitalize(stripS(filePath)) + 's' : capitalize(stripS(filePath))
     config.fileName = capitalize(filePath) + '-' + config.method
   }
 }

@@ -9,8 +9,8 @@ import c from "picocolors"
 const rootProgram = createProgramFromModuleText()
 
 export function validate(jsonObject: object, options: OptionsConfig): Result {
-  const { schemaDir: schema, hasSubdirectory, subdirectory, type, fileName } = options
-  const moduleText = createModuleTextFromJson(type, jsonObject)
+  const { schemaDir: schema, hasSubdirectory, subdirectory, typeName, fileName } = options
+  const moduleText = createModuleTextFromJson(typeName, jsonObject)
   const schemaDir = hasSubdirectory && subdirectory ? schema + '/' + subdirectory : schema
   const program = createProgramFromModuleText(fileName, moduleText, schemaDir, rootProgram)
   const syntacticDiagnostics = program.getSyntacticDiagnostics()
@@ -66,8 +66,8 @@ function getTypeProperty(text: string, start: number): string {
   return typeProperty.startsWith("son:") ? typeProperty.replace("son:", "").trim() : typeProperty.replace(/\s/g, '')
 }
 
-function createModuleTextFromJson(type: string, jsonObject: object): string {
-  return `import { ${type} } from './schema';\nconst json: ${type} = ${JSON.stringify(jsonObject, null, 2)};\n`
+function createModuleTextFromJson(typeName: string, jsonObject: object): string {
+  return `import { ${typeName} } from './schema';\nconst json: ${typeName} = ${JSON.stringify(jsonObject, null, 2)};\n`
 }
 
 function createProgramFromModuleText(typeSchema = '', moduleText = '', schemaDir = 'schema', oldProgram?: ts.Program): ts.Program {

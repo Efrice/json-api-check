@@ -9,8 +9,9 @@ describe("resolveOptionsConfig", ()=>{
     hasSubdirectory: false,
     subdirectory: '',
     method: 'GET',
-    type: '',
-    fileName: ''
+    typeName: '',
+    fileName: '',
+    isObjectArray: false
   }
 
   it("should console error when path is not valid", ()=>{
@@ -43,5 +44,11 @@ describe("resolveOptionsConfig", ()=>{
     resolveOptionsConfig('//vip/xxx/users/12', options)
     expect(options.subdirectory).toBe('vip')
     expect(options.fileName).toBe('User-GET')
+  })
+
+  it("should typeName is endsWith s when isObjectArray is true", ()=>{
+    const options = Object.assign({}, defaultConfig, { isObjectArray: true })
+    resolveOptionsConfig('/users', options)
+    expect(options.typeName).toBe('Users')
   })
 })

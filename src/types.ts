@@ -8,14 +8,9 @@ export interface Option {
 export interface OptionsConfig extends Option {
   subdirectory: string
   method: string
-  type: string
+  typeName: string
   fileName: string
-}
-
-export interface Error {
-  lines: string[]
-  property: string
-  message: string
+  isObjectArray: boolean
 }
 
 export interface Context {
@@ -23,6 +18,12 @@ export interface Context {
   interfaceItems: string[],
   join(str: string): void,
   push(item: string | string[]): void
+}
+
+export interface Error {
+  lines: string[]
+  property: string
+  message: string
 }
 
 export interface Result {
