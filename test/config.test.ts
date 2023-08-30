@@ -1,6 +1,6 @@
+import { describe, it, expect, vi } from 'vitest'
 import { resolveOptionsConfig } from '../src/config'
 import { OptionsConfig } from '../src/types'
-import { describe, it, expect, vi } from 'vitest'
 
 describe("resolveOptionsConfig", ()=>{
 

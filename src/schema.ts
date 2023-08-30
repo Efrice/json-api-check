@@ -18,17 +18,23 @@ export function createSchema(data, options: OptionsConfig){
 
   const filePath = path.resolve(subdirectory ? subdirPath : schemaPath, `./${fileName}.ts`)
   const context = createInterface(type)
+  const content = getContent(data, context, options)
+  writeFile(filePath, content)
+}
+
+export function getContent(data: any, context: Context, options: OptionsConfig): string {
+  const { type } = options
   if(isArray(data)){
     if(isObject(data[0])){
       const { interfaceStr, interfaceItems } = JsonType(data[0], context)
       options.type = type + 's'
-      writeFile(filePath, `export type ${options.type} = ${type}[]\n` + interfaceStr + interfaceItems.join("\n"))
+      return `export type ${options.type} = ${type}[]\n` + interfaceStr + interfaceItems.join("\n")
     }else {
-      writeFile(filePath, `export type ${type} = ${getBaseType(data[0])}[]`)
+      return `export type ${type} = ${getBaseType(data[0])}[]`
     }
   }else {
     const { interfaceStr, interfaceItems } = JsonType(data, context)
-    writeFile(filePath, interfaceStr + interfaceItems.join("\n"))
+    return interfaceStr + interfaceItems.join("\n")
   }
 }
 
@@ -38,7 +44,7 @@ function writeFile(filePath: string, content: string) {
   }
 }
 
-function createInterface(name: string): Context{
+export function createInterface(name: string): Context {
   const context = {
     interfaceStr: `export interface ${capitalize(stripS(name))} {\n`,
     interfaceItems: <any[]>[],
