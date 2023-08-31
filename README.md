@@ -4,7 +4,7 @@
 
 # jsonapi-check
 
-Easy to check type for json api response. Auto generate json interface file by request info ( path, method and response ) first time, then check type with the files next request. Of course, the json interface files can rewrite.
+Easy to check type for json api response. Auto generate TypeScript schema file by request info ( path, method and response ) at first time, then check json response according to the associated TypeScript schema next request. Of course, the TypeScript schema files can be rewritten.
 
 ## Install
 

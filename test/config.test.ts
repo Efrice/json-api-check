@@ -14,11 +14,11 @@ describe("resolveOptionsConfig", ()=>{
     isObjectArray: false
   }
 
-  it("should console error when path is not valid", ()=>{
-    console.error = vi.fn()
+  it("should console log error when path is not valid", ()=>{
+    console.log = vi.fn()
     const options = Object.assign({}, defaultConfig)
     resolveOptionsConfig('//', options)
-    expect(console.error).toBeCalled()
+    expect(console.log).toBeCalled()
   })
 
   it("should fileName has value when path is valid", ()=>{

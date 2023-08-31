@@ -6,7 +6,7 @@ export function resolveOptionsConfig(path, config: OptionsConfig) {
   const { hasSubdirectory, isObjectArray } = config
   const filePath = stripSlash(path)
   if(filePath === ''){
-    console.error(`${c.red(`Path ${path} is not valid.`)}`)  
+    console.log(c.inverse(c.bold(c.red(` ERROR `))) + `${c.red(`Path ${path} is not valid.`)}`)
     return
   }
   if(filePath.includes('/')){
@@ -17,7 +17,7 @@ export function resolveOptionsConfig(path, config: OptionsConfig) {
     const lastPath = paths[paths.length - 1]
     const resPath = isNumber(parseInt(lastPath)) ? stripS(paths[paths.length - 2]) : lastPath
     if(resPath === undefined || resPath === ''){
-      console.error(`${c.red(`Path ${path} is not valid.`)}`)  
+      console.log(c.inverse(c.bold(c.red(` ERROR `))) + `${c.red(`Path ${path} is not valid.`)}`)
       return
     }
     const capPath = capitalize(resPath)
