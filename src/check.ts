@@ -7,7 +7,7 @@ import { validate } from './validate'
 
 const config: OptionsConfig = {
   schemaDir: 'schema',
-  hasSubdirectory: false,
+  hasSubdirs: false,
   subdirectory: '',
   method: 'GET',
   typeName: '',
@@ -22,7 +22,7 @@ const config: OptionsConfig = {
  * @param {string} path The request path.
  * @param {Method} method The request method.
  * @param {any} data The response data.
- * @param {Option} options? The options to set output schemaDir and has subdirectory or not.
+ * @param {Option} options? The options to set output schemaDir and has subdirs or not.
  * @return {Result | null} The result of check, will show the error filePath and detail message.
  */
 export function jsonapiCheck(path: string, method: Method, data: any, options?: Option): Result | null {

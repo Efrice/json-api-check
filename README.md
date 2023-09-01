@@ -16,7 +16,7 @@ npm install jsonapi-check -D
 
 ### axios[node]
 
-See [example/node](./example/node/README.md) for more details.
+See [example/node](https://github.com/Efrice/jsonapi-check/blob/main/example/node/README.md) for more details.
 
 ```js
 import { jsonapiCheck } from 'jsonapi-check'
@@ -26,7 +26,7 @@ axios.interceptors.response.use((response) => {
   const { path, method } = requset
   const options = {
     schemaDir: 'schema',
-    hasSubdirectory: false
+    hasSubdirs: false
   }
 
   // dev-mode check
@@ -37,7 +37,7 @@ axios.interceptors.response.use((response) => {
 
 ### fetch[brower]
 
-See [example/brower](./example/brower/README.md) for more details.
+See [example/brower](https://github.com/Efrice/jsonapi-check/blob/main/example/brower/README.md) for more details.
 
 ## RESTful API
 
@@ -52,7 +52,7 @@ See [example/brower](./example/brower/README.md) for more details.
   
   The name of directory for generate json schema type.
 
-### hasSubdirectory
+### hasSubdirs
   - Type: `boolean`
   - Default: `false`
   

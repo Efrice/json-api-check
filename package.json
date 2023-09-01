@@ -1,6 +1,6 @@
 {
   "name": "jsonapi-check",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "description": "Easy to check type for json api response.",
   "author": "efrice",
   "license": "MIT",

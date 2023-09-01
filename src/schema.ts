@@ -4,7 +4,7 @@ import { isArray, isObject, getBaseType, capitalize, stripS } from './utils'
 import { Context, OptionsConfig } from './types'
 
 export function createSchemaFile(jsonObject, options: OptionsConfig){
-  const { schemaDir, hasSubdirectory, subdirectory, typeName, fileName } = options
+  const { schemaDir, hasSubdirs, subdirectory, typeName, fileName } = options
 
   const schemaPath = path.resolve(`./${schemaDir}`)
   if(!fs.existsSync(schemaPath)){
@@ -12,7 +12,7 @@ export function createSchemaFile(jsonObject, options: OptionsConfig){
   }
 
   const subdirPath = path.resolve(`./${schemaDir}/${subdirectory}`)
-  if(hasSubdirectory && !fs.existsSync(subdirPath)){
+  if(hasSubdirs && !fs.existsSync(subdirPath)){
     fs.mkdirSync(subdirPath)
   }
 

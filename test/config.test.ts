@@ -6,7 +6,7 @@ describe("resolveOptionsConfig", ()=>{
 
   const defaultConfig: OptionsConfig = {
     schemaDir: 'schema',
-    hasSubdirectory: false,
+    hasSubdirs: false,
     subdirectory: '',
     method: 'GET',
     typeName: '',
@@ -27,8 +27,8 @@ describe("resolveOptionsConfig", ()=>{
     expect(options.fileName).toBe('Users-GET')
   })
 
-  it("should fileName has value and subdirectory has value when path is valid and hasSubdirectory is true", ()=>{
-    const options = Object.assign({}, defaultConfig, { hasSubdirectory: true })
+  it("should fileName has value and subdirectory has value when path is valid and hasSubdirs is true", ()=>{
+    const options = Object.assign({}, defaultConfig, { hasSubdirs: true })
     resolveOptionsConfig('/users', options)
     expect(options.subdirectory).toBe('users')
     expect(options.fileName).toBe('Users-GET')

@@ -9,14 +9,14 @@ import c from "picocolors"
 const rootProgram = createProgramFromModuleText()
 
 export function validate(jsonObject: object, options: OptionsConfig): Result {
-  const { schemaDir: schema, hasSubdirectory, subdirectory, typeName, fileName } = options
+  const { schemaDir: schema, hasSubdirs, subdirectory, typeName, fileName } = options
   const moduleText = createModuleTextFromJson(typeName, jsonObject)
-  const schemaDir = hasSubdirectory && subdirectory ? schema + '/' + subdirectory : schema
+  const schemaDir = hasSubdirs && subdirectory ? schema + '/' + subdirectory : schema
   const program = createProgramFromModuleText(fileName, moduleText, schemaDir, rootProgram)
   const syntacticDiagnostics = program.getSyntacticDiagnostics()
   const programDiagnostics = syntacticDiagnostics.length ? syntacticDiagnostics : program.getSemanticDiagnostics()
   if (programDiagnostics.length) {
-    const filePath = ` ${schema} > ` + `${hasSubdirectory && subdirectory ? subdirectory + ' > ' : ''}` + `${fileName}.ts `
+    const filePath = ` ${schema} > ` + `${hasSubdirs && subdirectory ? subdirectory + ' > ' : ''}` + `${fileName}.ts `
     const errors = programDiagnostics.map(d => getDiagnostic(d))
     printErrorLog(filePath, errors)
     return {
